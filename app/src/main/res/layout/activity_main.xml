@@ -48,6 +48,11 @@
         android:layout_height="match_parent"
         android:layout_column="0"
         android:layout_row="1"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="10dp"
+        android:columnWidth="120dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="spacingWidthUniform"
         >
     </GridView>
 
