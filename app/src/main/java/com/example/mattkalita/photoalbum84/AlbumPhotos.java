@@ -1,32 +1,23 @@
 package com.example.mattkalita.photoalbum84;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static android.R.attr.name;
 
 public class AlbumPhotos extends AppCompatActivity {
 
     private static int PICK_IMAGE_REQUEST = 1;
-    PhotoAdapter adapter;
+    PhotoGridAdapter adapter;
     GridView gridView;
     Button addButton;
     ArrayList<Photo> imageViewArrayList;
@@ -39,7 +30,7 @@ public class AlbumPhotos extends AppCompatActivity {
 
         gridView = (GridView) findViewById(R.id.photos_gridview);
         imageViewArrayList = new ArrayList<>();
-        adapter= new PhotoAdapter(this,imageViewArrayList);
+        adapter= new PhotoGridAdapter(this,imageViewArrayList);
         gridView.setAdapter(adapter);
 
         addButton = (Button) findViewById(R.id.add_button);
