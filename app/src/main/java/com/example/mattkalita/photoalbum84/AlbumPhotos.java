@@ -25,7 +25,7 @@ public class AlbumPhotos extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_album_photos);
+        setContentView(R.layout.album_grid);
 
 
         gridView = (GridView) findViewById(R.id.photos_gridview);

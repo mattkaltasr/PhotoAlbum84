@@ -203,7 +203,7 @@ public class Controller {
             return false;
         }
     }
-    ublic boolean movePhoto(String filename, String oldAlbumName, String newAlbumName) {
+    public boolean movePhoto(String filename, String oldAlbumName, String newAlbumName) {
         if (!albums.containsKey(oldAlbumName)) {
             return false;
         }

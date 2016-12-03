@@ -56,11 +56,11 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
         options.inJustDecodeBounds = false;
         options.inPurgeable = true;
 
-        d = this.ctx.getResources().getDrawable(R.drawable.no_image);
+        d = this.ctx.getResources().getDrawable(R.drawable.no_Image);
 
-        placeholderWidth = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_image)
+        placeholderWidth = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_Image)
                 .getIntrinsicWidth());
-        placeholderHeight = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_image)
+        placeholderHeight = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_Image)
                 .getIntrinsicHeight());
 
         albumList = new ArrayList<Album>(albums.values());
