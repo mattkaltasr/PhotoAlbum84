@@ -49,6 +49,12 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
     private PhotoGridAdapter photoGridAdapter;
     boolean first = false;
 
+
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
