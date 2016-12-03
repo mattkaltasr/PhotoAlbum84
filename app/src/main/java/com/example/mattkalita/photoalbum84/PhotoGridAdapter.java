@@ -27,7 +27,7 @@ import android.widget.TextView;
  * Created by yigit on 11/27/2016.
  */
 
-public class PhotoGridAdapter extends BaseAdapter implements View.OnCreateContextMenuListener{
+public class PhotoGridAdapter extends BaseAdapter implements View.OnCreateContextMenuListener {
 
     private Context ctx;
     List<Photo> photoList;
@@ -39,8 +39,7 @@ public class PhotoGridAdapter extends BaseAdapter implements View.OnCreateContex
     private int placeholderWidth;
     private int placeholderHeight;
 
-
-    ublic PhotoGridAdapter(Context c, String a) {
+    public PhotoGridAdapter(Context c, String a) {
         super();
         this.ctx = c;
         this.album = a;
@@ -56,9 +55,9 @@ public class PhotoGridAdapter extends BaseAdapter implements View.OnCreateContex
         options.inPurgeable = true;
         options.inJustDecodeBounds = false;
 
-        placeholderWidth = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_image)
+        placeholderWidth = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_Image)
                 .getIntrinsicWidth());
-        placeholderHeight = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_image)
+        placeholderHeight = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_Image)
                 .getIntrinsicHeight());
     }
 

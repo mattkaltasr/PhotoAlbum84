@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(),AlbumPhotos.class);
                 startActivity(intent);
-                setContentView(R.layout.activity_album_photos);
+                setContentView(R.layout.album_grid);
             }
         });
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
