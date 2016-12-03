@@ -85,7 +85,7 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
         this.album = getIntent().getExtras().getString(AppConstants.ALBUM_TITLE);
         gv = (GridView) findViewById(R.id.grid);
         if (!ctrl.getAlbums().get(album).getPhotos().isEmpty()) {
-            int placeholderWidth = (int) (1.1 * this.getResources().getDrawable(R.drawable.no_Image).getIntrinsicWidth());
+            int placeholderWidth = (int) (1.1 * this.getResources().getDrawable(R.drawable.no_image).getIntrinsicWidth());
             gv.setColumnWidth(placeholderWidth);
             photoGridAdapter = new PhotoGridAdapter(this, album);
             gv.setAdapter(photoGridAdapter);

@@ -55,9 +55,9 @@ public class PhotoGridAdapter extends BaseAdapter implements View.OnCreateContex
         options.inPurgeable = true;
         options.inJustDecodeBounds = false;
 
-        placeholderWidth = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_Image)
+        placeholderWidth = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_image)
                 .getIntrinsicWidth());
-        placeholderHeight = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_Image)
+        placeholderHeight = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_image)
                 .getIntrinsicHeight());
     }
 
