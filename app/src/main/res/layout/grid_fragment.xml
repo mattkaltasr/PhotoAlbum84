@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity$DummySectionFragment" >
+    tools:context=".MainActivity$DummySectionFragment">
+
 
     <TextView
         android:id="@+id/label"
@@ -30,7 +31,7 @@
         android:stretchMode="columnWidth"
         android:verticalSpacing="18dp"
         android:horizontalSpacing="14dp"
-        android:gravity="center" >
+        android:gravity="center">
     </GridView>
 
 </RelativeLayout>
