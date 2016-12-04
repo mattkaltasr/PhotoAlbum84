@@ -77,11 +77,15 @@ public class Controller {
     }
 
     public void write() {
-        ObjectOutputStream os;
+
+     //   ObjectOutputStream os;
         try {
-            os = new ObjectOutputStream(ctx.openFileOutput(ALBUM_FILE, Context.MODE_WORLD_WRITEABLE));
+            FileOutputStream fos = ctx.openFileOutput(ALBUM_FILE, ctx.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+          //  os = new ObjectOutputStream(ctx.openFileOutput(ALBUM_FILE, "MODE_PRIVATE"));
             os.writeObject(albums);
             os.close();
+            fos.close();
             Log.i("File write", "success");
         } catch (FileNotFoundException e) {
             e.printStackTrace();

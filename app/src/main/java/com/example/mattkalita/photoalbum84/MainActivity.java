@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
@@ -53,7 +54,7 @@ public class MainActivity  extends Activity {
         ctrl = Controller.getInstance(ctx);
         gv = (GridView) findViewById(R.id.grid);
 
-        int placeholderWidth = (int) (1.1 *  ((ContextCompat.getDrawable(this, R.drawable.no_image).getIntrinsicWidth()) ));
+        int placeholderWidth = (int) (1.1 *  ContextCompat.getDrawable(this, R.drawable.no_image).getIntrinsicWidth()) ;
         gv.setColumnWidth(placeholderWidth);
         showAlbums();
     }
