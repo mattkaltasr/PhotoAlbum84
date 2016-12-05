@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -22,9 +23,11 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 public class MainActivity  extends Activity {
 
+    private Toolbar toolbar;
     private Controller ctrl;
     private GridView gv;
     private AlbumGridAdapter albumAdapter;
@@ -33,6 +36,7 @@ public class MainActivity  extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         init();
     }
 
@@ -50,6 +54,8 @@ public class MainActivity  extends Activity {
 
     public void init() {
         setContentView(R.layout.grid_fragment);
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setActionBar(toolbar);
         ctx = this;
         ctrl = Controller.getInstance(ctx);
         gv = (GridView) findViewById(R.id.grid);
