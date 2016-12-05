@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/grid_cell"
-    android:layout_width="110dp"
-    android:layout_height="110dp"
-    android:layout_gravity="center"
-    android:layout_marginBottom="3dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="3dp"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:background="#CCC">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_red_light">
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="200dp"
+        android:minWidth="200dp"
+        android:scaleType="fitXY"
         android:contentDescription="@string/image"
-        android:gravity="center"
-        android:padding="1dp"
         android:src="@drawable/no_image" />
 
     <TextView
         android:id="@+id/caption"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_gravity="center"
-        android:ellipsize="end"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:maxLines="1"
-        android:padding="1dp"
-        android:scrollHorizontally="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:textColor="@android:color/white"
+        android:background="#55000000"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textIsSelectable="false" />
+        android:textIsSelectable="false"/>
 
-</LinearLayout>
+</FrameLayout>

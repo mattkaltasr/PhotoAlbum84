@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -110,7 +111,7 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
     public class ViewHolder {
         ImageView image;
         TextView caption;
-        LinearLayout container;
+        FrameLayout container;
     }
 
     @Override
@@ -121,7 +122,7 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
             convertView = inflater.inflate(R.layout.grid_square, null);
             holder.image = (ImageView) convertView.findViewById(R.id.image);
             holder.caption = (TextView) convertView.findViewById(R.id.caption);
-            holder.container = (LinearLayout) convertView.findViewById(R.id.grid_cell);
+            holder.container = (FrameLayout) convertView.findViewById(R.id.grid_cell);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
