@@ -32,6 +32,8 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
 /**
  * Created by matt kalita on 12/3/2016.
  */
@@ -49,11 +51,7 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
     private GridView gv;
     private PhotoGridAdapter photoGridAdapter;
     boolean first = false;
-
-
-
-
-
+    private Toolbar toolbar;
 
 
     @Override
@@ -86,6 +84,8 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
 
     public void init() {
         setContentView(R.layout.grid_fragment);
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setActionBar(toolbar);
         ctx = this;
         ctrl = Controller.getInstance(getApplicationContext());
 
