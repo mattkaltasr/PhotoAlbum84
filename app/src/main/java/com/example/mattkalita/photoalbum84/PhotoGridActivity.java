@@ -19,6 +19,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -91,7 +92,7 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
         this.album = getIntent().getExtras().getString(AppConstants.ALBUM_TITLE);
         gv = (GridView) findViewById(R.id.grid);
         if (!ctrl.getAlbums().get(album).getPhotos().isEmpty()) {
-            int placeholderWidth = (int) (1.1 * this.getResources().getDrawable(R.drawable.no_image).getIntrinsicWidth());
+            int placeholderWidth = (int) (1.1 * ContextCompat.getDrawable(this, R.drawable.no_image).getIntrinsicWidth());
             gv.setColumnWidth(placeholderWidth);
             photoGridAdapter = new PhotoGridAdapter(this, album);
             gv.setAdapter(photoGridAdapter);
@@ -101,7 +102,8 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
             tv.setGravity(Gravity.CENTER);
             tv.setText("No Photos");
         }
-
+/// need to set this as tool bar or pull tabs
+        
         final ActionBar actionBar = getActionBar();
 
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -156,32 +158,7 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
             menu.findItem(R.id.take_photo).setVisible(false);
             menu.findItem(R.id.take_photo).setActionView(View.GONE);
         }
-//		final MenuItem searchMenuItem = menu.findItem(R.id.search);
-//		final SearchView searchView = (SearchView) searchMenuItem.getActionView();
-//		searchView.setOnQueryTextListener(new OnQueryTextListener() {
-//
-//			@Override
-//			public boolean onQueryTextSubmit(String query) {
-//				Intent i = new Intent(getApplicationContext(), Searchable.class);
-//				i.putExtra(AppConstants.QUERY, searchView.getQuery().toString());
-//				startActivity(i);
-//				return false;
-//			}
-//
-//			@Override
-//			public boolean onQueryTextChange(String newText) {
-//				return false;
-//			}
-//		});
-//		searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-//			@Override
-//			public void onFocusChange(View v, boolean hasFocus) {
-//				if (!hasFocus) {
-//					searchView.setQuery("", false);
-//					searchMenuItem.collapseActionView();
-//				}
-//			}
-//		});
+
 
         return true;
     }

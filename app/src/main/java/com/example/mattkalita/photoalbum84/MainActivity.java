@@ -60,7 +60,7 @@ public class MainActivity  extends Activity {
         ctrl = Controller.getInstance(ctx);
         gv = (GridView) findViewById(R.id.grid);
 
-        int placeholderWidth = (int) (1.1 *  ContextCompat.getDrawable(this, R.drawable.no_image).getIntrinsicWidth()) ;
+        int placeholderWidth = (int) (1.5 *  ContextCompat.getDrawable(this, R.drawable.no_image).getIntrinsicWidth()) ;
         gv.setColumnWidth(placeholderWidth);
         showAlbums();
     }
