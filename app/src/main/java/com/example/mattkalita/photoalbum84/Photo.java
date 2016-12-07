@@ -1,9 +1,11 @@
 package com.example.mattkalita.photoalbum84;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import java.io.File;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,21 +16,27 @@ import java.util.List;
 public class Photo implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+  Uri imageUri;
     String parentAlbum;
     String filename;
     List<PhotoTag> tags;
 
-    public Photo(String filename, List<PhotoTag> tags) {
+   public Photo(String filename, List<PhotoTag> tags) {
         super();
         this.filename = filename;
         this.tags = tags;
     }
-
+    public Photo(Uri imageUri, List<PhotoTag> tags) {
+        super();
+        this.imageUri=imageUri;
+        this.filename = null;
+        this.tags = tags;
+    }
     public Photo(String filename, List<PhotoTag> tags, String parentAlbum) {
         super();
+        this.imageUri=imageUri;
         this.parentAlbum = parentAlbum;
-        this.filename = filename;
+       // this.filename = filename;
         this.tags = tags;
     }
 
@@ -38,6 +46,12 @@ public class Photo implements Serializable {
         this.tags = new ArrayList<PhotoTag>();
     }
 
+
+
+
+    public Uri getImageUri(){
+        return imageUri;
+    }
     public String getParentAlbum() {
         return parentAlbum;
     }
@@ -60,6 +74,9 @@ public class Photo implements Serializable {
 
     public void setTags(List<PhotoTag> tags) {
         this.tags = tags;
+    }
+    public void setUri(Uri temp){
+        this.imageUri=temp;
     }
 
     public boolean addTag(String tagType, String tagValue) {

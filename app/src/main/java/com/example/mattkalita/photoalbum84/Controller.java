@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 
@@ -171,8 +172,8 @@ public class Controller {
         }
     }
 
-
-    public boolean addPhotoToAlbum(String filepath, String albumName) throws FileNotFoundException,
+//this needs to be changed
+    public boolean addPhotoToAlbum(Uri tempuri, String filepath, String albumName) throws FileNotFoundException,
             IOException {
         if (!new File(filepath).exists()) {
             throw new FileNotFoundException();
@@ -200,6 +201,7 @@ public class Controller {
         if (!albums.get(albumName).getPhotos().containsKey(filepath)) {
             p.setTags(new ArrayList<PhotoTag>());
             p.setParentAlbum(albumName);
+            p.setUri(tempuri);
             albums.get(albumName).getPhotos().put(filename, p);
             write();
             return true;

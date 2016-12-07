@@ -1,6 +1,8 @@
 package com.example.mattkalita.photoalbum84;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +18,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -103,7 +107,7 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
             tv.setText("No Photos");
         }
 /// need to set this as tool bar or pull tabs
-        
+
         final ActionBar actionBar = getActionBar();
 
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -194,13 +198,27 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
     }
 
     @Override
+
+    //crash caused here
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == RESULT_LOAD_IMAGE && null != data) {
-                String path = getPathFromUri(data.getData());
+                Uri uri= data.getData();
+                File file= new File(uri.getPath());
+                String path = file.getName();
+                //this method cause crash
+              //  String path = getPathFromUri(data.getData());
+              //  Uri imageUri = data.getData();// declare a stream to read the image data from the SD Card.
+              //  InputStream inputStream;
+
                 try {
-                    if (ctrl.addPhotoToAlbum(path, this.album)) {
+                  //  inputStream = getContentResolver().openInputStream(imageUri);
+
+                    // get a bitmap from the stream.
+                 //   Bitmap image = BitmapFactory.decodeStream(inputStream);
+                 //   Photo temp=new Photo(imageUri,null);
+                    if (ctrl.addPhotoToAlbum(uri,path, this.album)) {
                         this.recreate();
                     } else {
                         Toast.makeText(getApplicationContext(), "Could not add photo.", Toast.LENGTH_LONG)
@@ -212,7 +230,8 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
                     e.printStackTrace();
                 }
             } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
-
+         //needs to change
+                       Uri temp=null;
                 final String[] imageColumns = {MediaStore.Images.Media._ID,
                         MediaStore.Images.Media.DATA};
                 final String imageOrderBy = MediaStore.Images.Media._ID + " DESC";
@@ -223,7 +242,7 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
                     Log.e("TAG", "getLastImageId::path " + fullPath);
 
                     try {
-                        if (ctrl.addPhotoToAlbum(fullPath, album)) {
+                        if (ctrl.addPhotoToAlbum(temp,fullPath, album)) {
                             Toast.makeText(getApplicationContext(), "Photo added to " + this.album
                                     + ".", Toast.LENGTH_SHORT).show();
                         }
@@ -251,7 +270,8 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
             Log.e("Request failed", "requestCode: " + requestCode);
         }
     }
-
+///
+    //need this reworked caused click crash
     public String getPathFromUri(Uri selectedImage) {
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
