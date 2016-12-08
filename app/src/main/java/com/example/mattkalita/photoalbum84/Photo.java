@@ -16,7 +16,8 @@ import java.util.List;
 public class Photo implements Serializable {
 
     private static final long serialVersionUID = 1L;
-  Uri imageUri;
+    Bitmap image;
+    Uri imageUri;
     String parentAlbum;
     String filename;
     List<PhotoTag> tags;
@@ -45,7 +46,12 @@ public class Photo implements Serializable {
         this.filename = filename;
         this.tags = new ArrayList<PhotoTag>();
     }
-
+    public Photo(String filename, Bitmap image) {
+        super();
+        this.filename = filename;
+        this.image = image;
+        this.tags = new ArrayList<PhotoTag>();
+    }
 
 
 

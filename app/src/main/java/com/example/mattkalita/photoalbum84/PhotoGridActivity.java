@@ -12,7 +12,9 @@ import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,6 +24,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -34,6 +37,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -188,8 +192,13 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
     }
 
     public void dispatchChoosePictureIntent() {
-        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, RESULT_LOAD_IMAGE);
+        // Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                // 2. pick image only
+                intent.setType("image/*");
+                // 3. start activity
+                startActivityForResult(intent, RESULT_LOAD_IMAGE);
+       // startActivityForResult(i, RESULT_LOAD_IMAGE);
     }
 
     private void dispatchTakePictureIntent() {
@@ -197,8 +206,10 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
         startActivityForResult(takePictureIntent, CAMERA_REQUEST);
     }
 
-    @Override
 
+
+
+    @Override
     //crash caused here
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -206,19 +217,26 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
             if (requestCode == RESULT_LOAD_IMAGE && null != data) {
                 Uri uri= data.getData();
                 File file= new File(uri.getPath());
-                String path = file.getName();
-                //this method cause crash
-              //  String path = getPathFromUri(data.getData());
-              //  Uri imageUri = data.getData();// declare a stream to read the image data from the SD Card.
-              //  InputStream inputStream;
+                String path = uri.toString();
+
+
+
+                InputStream inputStream;
 
                 try {
-                  //  inputStream = getContentResolver().openInputStream(imageUri);
 
-                    // get a bitmap from the stream.
-                 //   Bitmap image = BitmapFactory.decodeStream(inputStream);
-                 //   Photo temp=new Photo(imageUri,null);
-                    if (ctrl.addPhotoToAlbum(uri,path, this.album)) {
+                    // THIS INPUT STREM WORKS!!
+
+                  inputStream = getContentResolver().openInputStream(uri);
+                  Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+
+                    //CHANGED THE METHOD TO GET THE IMAGE
+                    //ADDED ANOTHER CONSTRUCTOR TO PHOTO CLASS TOO
+                    //MAYBE THIS IS THE WAY WE SHOULD DO BUT I COULDN'T FIX IT YET
+
+
+                    if (ctrl.addPhotoToAlbum(uri,path, image, this.album)) {
                         this.recreate();
                     } else {
                         Toast.makeText(getApplicationContext(), "Could not add photo.", Toast.LENGTH_LONG)
@@ -229,7 +247,10 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
+            }
+            // BROKEN MAYBE WE CAN REMOVE THIS AND JUST USE GALLERY
+            //
+           /* else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
          //needs to change
                        Uri temp=null;
                 final String[] imageColumns = {MediaStore.Images.Media._ID,
@@ -262,7 +283,7 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
                             .show();
                 }
 
-            } else {
+            }*/ else {
                 Log.e("Request not recognized", "code: " + requestCode + ", resultCode = "
                         + resultCode);
             }

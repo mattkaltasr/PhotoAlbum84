@@ -20,9 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
-
+import android.widget.Toast;
 
 
 public class Controller {
@@ -173,14 +174,17 @@ public class Controller {
     }
 
 //this needs to be changed
-    public boolean addPhotoToAlbum(Uri tempuri, String filepath, String albumName) throws FileNotFoundException,
+    public boolean addPhotoToAlbum(Uri tempuri, String filepath, Bitmap image, String albumName) throws FileNotFoundException,
             IOException {
-        if (!new File(filepath).exists()) {
+       /*
+        if (!new File(tempuri.toString()).exists()) {
             throw new FileNotFoundException();
         }
+        */
+
 
         String filename = filepath.substring(filepath.lastIndexOf("/") + 1);
-        File file = new File(ctx.getFilesDir(), filename);
+        /*File file = new File(ctx.getFilesDir(), filename);
         if (!file.exists()) {
             InputStream in = new FileInputStream(filepath);
             OutputStream out = new FileOutputStream(file);
@@ -193,16 +197,18 @@ public class Controller {
             in.close();
             out.close();
         }
-
+*/
         if (!albums.containsKey(albumName)) {
             return false;
         }
-        Photo p = new Photo(filename);
+
+        Photo p = new Photo(filename,image);
         if (!albums.get(albumName).getPhotos().containsKey(filepath)) {
             p.setTags(new ArrayList<PhotoTag>());
             p.setParentAlbum(albumName);
             p.setUri(tempuri);
             albums.get(albumName).getPhotos().put(filename, p);
+
             write();
             return true;
         } else {
