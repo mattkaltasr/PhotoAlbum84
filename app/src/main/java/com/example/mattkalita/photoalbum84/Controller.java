@@ -22,7 +22,7 @@ import java.util.List;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-
+import android.widget.Toast;
 
 
 public class Controller {
@@ -204,6 +204,8 @@ public class Controller {
             p.setUri(tempuri);
             albums.get(albumName).getPhotos().put(filename, p);
             write();
+
+
             return true;
         } else {
             return false;

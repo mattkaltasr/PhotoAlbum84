@@ -12,6 +12,7 @@ import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,7 +22,9 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -206,18 +209,28 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
             if (requestCode == RESULT_LOAD_IMAGE && null != data) {
                 Uri uri= data.getData();
                 File file= new File(uri.getPath());
-                String path = file.getName();
+               String path = data.getData().getPath();
                 //this method cause crash
-              //  String path = getPathFromUri(data.getData());
-              //  Uri imageUri = data.getData();// declare a stream to read the image data from the SD Card.
-              //  InputStream inputStream;
+               //  String path = getRealPath(ctx,uri);
+                //  Uri imageUri = data.getData();// declare a stream to read the image data from the SD Card.
+                //  InputStream inputStream;
+
+                Context context = getApplicationContext();
+                CharSequence text = path;
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+
+
 
                 try {
-                  //  inputStream = getContentResolver().openInputStream(imageUri);
+                    //  inputStream = getContentResolver().openInputStream(imageUri);
 
                     // get a bitmap from the stream.
-                 //   Bitmap image = BitmapFactory.decodeStream(inputStream);
-                 //   Photo temp=new Photo(imageUri,null);
+                    //   Bitmap image = BitmapFactory.decodeStream(inputStream);
+                    //   Photo temp=new Photo(imageUri,null);
                     if (ctrl.addPhotoToAlbum(uri,path, this.album)) {
                         this.recreate();
                     } else {
@@ -230,8 +243,8 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
                     e.printStackTrace();
                 }
             } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
-         //needs to change
-                       Uri temp=null;
+                //needs to change
+                Uri temp=null;
                 final String[] imageColumns = {MediaStore.Images.Media._ID,
                         MediaStore.Images.Media.DATA};
                 final String imageOrderBy = MediaStore.Images.Media._ID + " DESC";
@@ -270,7 +283,7 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
             Log.e("Request failed", "requestCode: " + requestCode);
         }
     }
-///
+    ///
     //need this reworked caused click crash
     public String getPathFromUri(Uri selectedImage) {
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -362,4 +375,30 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
         gv.setAdapter(photoGridAdapter);
         gv.invalidate();
     }
+
+    public static String getRealPath(Context context, Uri uri){
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Images.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ id }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
+    }
+
+
 }

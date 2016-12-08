@@ -1,6 +1,7 @@
 package com.example.mattkalita.photoalbum84;
 
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import java.util.List;
 public class Photo implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    Image photo;
   Uri imageUri;
     String parentAlbum;
     String filename;
@@ -25,6 +27,7 @@ public class Photo implements Serializable {
         super();
         this.filename = filename;
         this.tags = tags;
+       photo=null;
     }
     public Photo(Uri imageUri, List<PhotoTag> tags) {
         super();
