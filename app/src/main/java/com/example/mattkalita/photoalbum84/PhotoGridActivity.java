@@ -226,12 +226,12 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
 
 
                 try {
-                    //  inputStream = getContentResolver().openInputStream(imageUri);
+                    InputStream inputStream = getContentResolver().openInputStream(uri);
 
                     // get a bitmap from the stream.
-                    //   Bitmap image = BitmapFactory.decodeStream(inputStream);
+                    Bitmap image = BitmapFactory.decodeStream(inputStream);
                     //   Photo temp=new Photo(imageUri,null);
-                    if (ctrl.addPhotoToAlbum(uri,path, this.album)) {
+                    if (ctrl.addPhotoToAlbum(uri,path,image, this.album)) {
                         this.recreate();
                     } else {
                         Toast.makeText(getApplicationContext(), "Could not add photo.", Toast.LENGTH_LONG)
@@ -242,7 +242,12 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
+            }
+
+            //MAYBE WE SHOULDN"T HAVE CAMERA AT ALL IF IT IS NOT REQUIRED
+
+/*
+            else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
                 //needs to change
                 Uri temp=null;
                 final String[] imageColumns = {MediaStore.Images.Media._ID,
@@ -270,12 +275,13 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
                     }
                     imageCursor.close();
                     imageCursor = null;
-                } else {
+                }
+            else {
                     Toast.makeText(getApplicationContext(), "Photo file not found.", Toast.LENGTH_SHORT)
                             .show();
                 }
 
-            } else {
+            }*/ else {
                 Log.e("Request not recognized", "code: " + requestCode + ", resultCode = "
                         + resultCode);
             }
