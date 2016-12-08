@@ -210,6 +210,8 @@ public class Controller {
             albums.get(albumName).getPhotos().put(filename, p);
 
             write();
+
+
             return true;
         } else {
             return false;
