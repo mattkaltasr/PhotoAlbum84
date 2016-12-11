@@ -53,7 +53,7 @@ public class PhotoGridAdapter extends BaseAdapter implements View.OnCreateContex
 
         options = new BitmapFactory.Options();
         options.inSampleSize = 4;
-        options.inPurgeable = true;
+        //options.inPurgeable = true;
         options.inJustDecodeBounds = false;
 
         placeholderWidth = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_image)

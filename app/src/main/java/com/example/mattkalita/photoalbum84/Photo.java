@@ -32,6 +32,7 @@ public class Photo implements Serializable {
         this.imageUri=imageUri;
         this.filename = null;
         this.tags = tags;
+        Bitmap image=null;
     }
     public Photo(String filename, List<PhotoTag> tags, String parentAlbum) {
         super();

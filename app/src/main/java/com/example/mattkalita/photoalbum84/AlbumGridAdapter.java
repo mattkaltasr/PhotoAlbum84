@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -53,16 +54,14 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
 
         options = new BitmapFactory.Options();
         options.inSampleSize = 8;
-        options.inPurgeable = true;
+       // options.inPurgeable = true;
         options.inJustDecodeBounds = false;
-        options.inPurgeable = true;
+       // options.inPurgeable = true;
 
         d = this.ctx.getResources().getDrawable(R.drawable.no_image);
 
-        placeholderWidth = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_image)
-                .getIntrinsicWidth());
-        placeholderHeight = (int) (1.1 * ctx.getResources().getDrawable(R.drawable.no_image)
-                .getIntrinsicHeight());
+        placeholderWidth = (int) (1.5 *  ContextCompat.getDrawable(c, R.drawable.no_image).getIntrinsicWidth()) ;
+        placeholderHeight = (int) (1.5 *  ContextCompat.getDrawable(c, R.drawable.no_image).getIntrinsicHeight()) ;
 
         albumList = new ArrayList<Album>(albums.values());
         albumCovers = new ArrayList<Photo>();

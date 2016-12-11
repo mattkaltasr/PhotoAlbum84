@@ -207,6 +207,7 @@ public class Controller {
             p.setTags(new ArrayList<PhotoTag>());
             p.setParentAlbum(albumName);
             p.setUri(tempuri);
+
             albums.get(albumName).getPhotos().put(filename, p);
 
             write();
