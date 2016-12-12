@@ -36,11 +36,14 @@ public class Searchable extends Activity {
 
         String query = getIntent().getExtras().getString(AppConstants.QUERY);
         doSearch(query);
-
+/// line that crashes  i think need to bee tool bar
+   try{
         getActionBar().setTitle("Search Results for " + "\"" + query + "\"");
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
+catch (Exception e){
+    System.out.print("not there");
+}}
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
