@@ -226,10 +226,7 @@ public class PhotoGridActivity extends Activity implements OnNavigationListener 
 
 
                 try {
-                    InputStream inputStream = getContentResolver().openInputStream(uri);
-
-                    // get a bitmap from the stream.
-                    Bitmap image = BitmapFactory.decodeStream(inputStream);
+                    Bitmap image = BitmapFactory.decodeFile(path, new BitmapFactory.Options());
                     //   Photo temp=new Photo(imageUri,null);
                     if (ctrl.addPhotoToAlbum(uri,path,image, this.album)) {
                         this.recreate();
