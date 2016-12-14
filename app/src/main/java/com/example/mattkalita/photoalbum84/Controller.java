@@ -4,26 +4,22 @@ package com.example.mattkalita.photoalbum84;
  * Created by matt kalita on 11/30/2016.
  */
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.util.Log;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.util.Log;
-import android.widget.Toast;
 
 
 public class Controller {
@@ -80,11 +76,11 @@ public class Controller {
 
     public void write() {
 
-     //   ObjectOutputStream os;
+        //   ObjectOutputStream os;
         try {
             FileOutputStream fos = ctx.openFileOutput(ALBUM_FILE, ctx.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
-          //  os = new ObjectOutputStream(ctx.openFileOutput(ALBUM_FILE, "MODE_PRIVATE"));
+            //  os = new ObjectOutputStream(ctx.openFileOutput(ALBUM_FILE, "MODE_PRIVATE"));
             os.writeObject(albums);
             os.close();
             fos.close();
@@ -95,9 +91,11 @@ public class Controller {
             e.printStackTrace();
         }
     }
+
     public HashMap<String, Album> getAlbums() {
         return this.albums;
     }
+
     public int getAlbumSize(String album) {
         Album a = albums.get(album);
         if (a != null) {
@@ -113,6 +111,7 @@ public class Controller {
         }
         return 0;
     }
+
     public HashMap<String, Photo> listPhotosInAlbum(String album) {
         Album a = albums.get(album);
         if (a != null) {
@@ -137,6 +136,7 @@ public class Controller {
             return false;
         }
     }
+
     public boolean deleteAlbum(String album) {
         if (albums.containsKey(album)) {
             // To delete files on delete album
@@ -173,7 +173,7 @@ public class Controller {
         }
     }
 
-//this needs to be changed
+    //this needs to be changed
     public boolean addPhotoToAlbum(Uri tempuri, String filepath, Bitmap image, String albumName) throws FileNotFoundException,
             IOException {
        /*
@@ -202,7 +202,7 @@ public class Controller {
             return false;
         }
 
-        Photo p = new Photo(filename,image);
+        Photo p = new Photo(Uri.fromFile(new File(filepath)), filename, image);
         if (!albums.get(albumName).getPhotos().containsKey(filepath)) {
             p.setTags(new ArrayList<PhotoTag>());
             p.setParentAlbum(albumName);
@@ -218,6 +218,7 @@ public class Controller {
             return false;
         }
     }
+
     public boolean movePhoto(String filename, String oldAlbumName, String newAlbumName) {
         if (!albums.containsKey(oldAlbumName)) {
             return false;
@@ -306,7 +307,6 @@ public class Controller {
     }
 
 
-
     public Photo listPhotoInfo(String filename) {
         for (Album album : albums.values()) { // albums
             if (album.getPhotos().containsKey(filename)) {
@@ -318,30 +318,29 @@ public class Controller {
 
 
     public List<Photo> getPhotosByTag(List<PhotoTag> tags) {
-    List<Photo> matching = new ArrayList<Photo>();
-    for (Album album : albums.values()) { // albums
-        for (Photo photo : album.getPhotos().values()) { // photos
-            List<PhotoTag> photoTags = photo.getTags();
-            for (PhotoTag tag : tags) {
-                if (tag.getTagType().isEmpty()) { // match any tag type
-                    for (PhotoTag t : photoTags) { // iterate through all of
-                        // the photo's tags and
-                        // compare tagValue
-                        if (t.getTagValue().equals(tag.getTagValue())) {
+        List<Photo> matching = new ArrayList<Photo>();
+        for (Album album : albums.values()) { // albums
+            for (Photo photo : album.getPhotos().values()) { // photos
+                List<PhotoTag> photoTags = photo.getTags();
+                for (PhotoTag tag : tags) {
+                    if (tag.getTagType().isEmpty()) { // match any tag type
+                        for (PhotoTag t : photoTags) { // iterate through all of
+                            // the photo's tags and
+                            // compare tagValue
+                            if (t.getTagValue().equals(tag.getTagValue())) {
+                                matching.add(photo);
+                            }
+                        }
+                    } else {
+                        if (photoTags.contains(tag)) {
                             matching.add(photo);
                         }
-                    }
-                } else {
-                    if (photoTags.contains(tag)) {
-                        matching.add(photo);
                     }
                 }
             }
         }
+        return matching;
     }
-    return matching;
-}
-
 
 
     public List<String> findParentAlbumsOfPhoto(String filename) {
@@ -373,10 +372,6 @@ public class Controller {
     public List<PhotoTag> getTagsForPhoto(String album, String filename) {
         return this.albums.get(album).getPhotos().get(filename).getTags();
     }
-
-
-
-
 
 
 }

@@ -5,7 +5,6 @@ import android.net.Uri;
 
 import java.io.File;
 import java.io.Serializable;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,28 +16,30 @@ public class Photo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     Bitmap image;
-    Uri imageUri;
+    String imageUri;
     String parentAlbum;
     String filename;
     List<PhotoTag> tags;
 
-   public Photo(String filename, List<PhotoTag> tags) {
+    public Photo(String filename, List<PhotoTag> tags) {
         super();
         this.filename = filename;
         this.tags = tags;
     }
+
     public Photo(Uri imageUri, List<PhotoTag> tags) {
         super();
-        this.imageUri=imageUri;
+        this.imageUri = imageUri.toString();
         this.filename = null;
         this.tags = tags;
-        Bitmap image=null;
+        Bitmap image = null;
     }
+
     public Photo(String filename, List<PhotoTag> tags, String parentAlbum) {
         super();
-        this.imageUri=imageUri;
+        this.imageUri = imageUri;
         this.parentAlbum = parentAlbum;
-       // this.filename = filename;
+        // this.filename = filename;
         this.tags = tags;
     }
 
@@ -47,18 +48,20 @@ public class Photo implements Serializable {
         this.filename = filename;
         this.tags = new ArrayList<PhotoTag>();
     }
-    public Photo(String filename, Bitmap image) {
+
+    public Photo(Uri uri, String filename, Bitmap image) {
         super();
+        this.imageUri = uri.toString();
         this.filename = filename;
         this.image = image;
         this.tags = new ArrayList<PhotoTag>();
     }
 
 
-
-    public Uri getImageUri(){
-        return imageUri;
+    public Uri getImageUri() {
+        return Uri.parse(imageUri);
     }
+
     public String getParentAlbum() {
         return parentAlbum;
     }
@@ -82,8 +85,9 @@ public class Photo implements Serializable {
     public void setTags(List<PhotoTag> tags) {
         this.tags = tags;
     }
-    public void setUri(Uri temp){
-        this.imageUri=temp;
+
+    public void setUri(Uri temp) {
+        this.imageUri = temp.toString();
     }
 
     public boolean addTag(String tagType, String tagValue) {
@@ -105,6 +109,7 @@ public class Photo implements Serializable {
         }
         return true;
     }
+
     public boolean deleteTag(String tagType, String tagValue) {
         System.out.println("Tags: " + this.tags);
         PhotoTag t = new PhotoTag(tagType, tagValue);
@@ -178,16 +183,6 @@ public class Photo implements Serializable {
     public String toString() {
         return filename + "\nAlbum: " + parentAlbum + "\nTags: " + StringDisplayUtil.formatTagList(tags);
     }
-
-
-
-
-
-
-
-
-
-
 
 
 }

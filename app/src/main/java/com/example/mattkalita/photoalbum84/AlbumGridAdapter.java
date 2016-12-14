@@ -3,17 +3,15 @@ package com.example.mattkalita.photoalbum84;
 /**
  * Created by matt kalita on 11/30/2016.
  */
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -28,6 +26,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContextMenuListener {
@@ -54,14 +57,14 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
 
         options = new BitmapFactory.Options();
         options.inSampleSize = 8;
-       // options.inPurgeable = true;
+        // options.inPurgeable = true;
         options.inJustDecodeBounds = false;
-       // options.inPurgeable = true;
+        // options.inPurgeable = true;
 
         d = this.ctx.getResources().getDrawable(R.drawable.no_image);
 
-        placeholderWidth = (int) (1.5 *  ContextCompat.getDrawable(c, R.drawable.no_image).getIntrinsicWidth()) ;
-        placeholderHeight = (int) (1.5 *  ContextCompat.getDrawable(c, R.drawable.no_image).getIntrinsicHeight()) ;
+        placeholderWidth = (int) (1.5 * ContextCompat.getDrawable(c, R.drawable.no_image).getIntrinsicWidth());
+        placeholderHeight = (int) (1.5 * ContextCompat.getDrawable(c, R.drawable.no_image).getIntrinsicHeight());
 
         albumList = new ArrayList<Album>(albums.values());
         albumCovers = new ArrayList<Photo>();
@@ -71,14 +74,10 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
                 HashMap<String, Photo> photos = album.getValue().getPhotos();
                 if (photos != null && !photos.isEmpty()) {
                     for (Map.Entry<String, Photo> photo : photos.entrySet()) {
-                        File file = new File(ctx.getFilesDir() + File.separator
-                                + photo.getValue().getFilename());
-                        if (file.exists()) {
+                        if (checkIfExist(ctx,photo.getValue().getImageUri())) {
                             albumCovers.add(photo.getValue());
                         } else {
-                            Log.e("File does not exist", Environment
-                                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                                    + photo.getValue().getFilename());
+                            Log.e("File does not exist", photo.getValue().getImageUri().toString());
                         }
                         break;
                     }
@@ -88,7 +87,6 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
             }
         } else {
             albumCovers.add(p);
-
         }
     }
 
@@ -128,7 +126,7 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
         }
 
         if (albumList.isEmpty() || albumCovers.isEmpty()) {
-            return null;
+            return convertView;
         }
 
         String fname = albumCovers.get(position).getFilename();
@@ -179,8 +177,24 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
 
     }
 
-
-
+    private boolean checkIfExist(Context context, Uri contentUri) {
+        ContentResolver cr = context.getContentResolver();
+        String[] projection = {MediaStore.MediaColumns.DATA};
+        Cursor cur = cr.query(contentUri, projection, null, null, null);
+        if (cur != null) {
+            boolean b = false;
+            if (cur.moveToFirst()) {
+                String filePath = cur.getString(0);
+                b = new File(filePath).exists();
+            } else {
+                b = false;
+            }
+            cur.close();
+            return b;
+        } else {
+            return false;
+        }
+    }
 
 
 }
