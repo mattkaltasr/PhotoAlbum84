@@ -59,7 +59,7 @@ public class Photo implements Serializable {
 
 
     public Uri getImageUri() {
-        return Uri.parse(imageUri);
+        return imageUri == null ? null : Uri.parse(imageUri);
     }
 
     public String getParentAlbum() {
