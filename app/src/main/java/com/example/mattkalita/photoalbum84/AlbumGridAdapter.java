@@ -21,9 +21,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.File;
@@ -108,7 +107,7 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
     public class ViewHolder {
         ImageView image;
         TextView caption;
-        FrameLayout container;
+        RelativeLayout container;
     }
 
     @Override
@@ -119,7 +118,7 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
             convertView = inflater.inflate(R.layout.grid_square, null);
             holder.image = (ImageView) convertView.findViewById(R.id.image);
             holder.caption = (TextView) convertView.findViewById(R.id.caption);
-            holder.container = (FrameLayout) convertView.findViewById(R.id.grid_cell);
+            holder.container = (RelativeLayout) convertView.findViewById(R.id.grid_cell);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -134,7 +133,7 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
         if (!fname.isEmpty()) {
             File file = new File(ctx.getFilesDir() + File.separator + fname);
             holder.image.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath(), options));
-            holder.image.setLayoutParams(new LinearLayout.LayoutParams(placeholderWidth, placeholderHeight));
+            holder.image.setLayoutParams(new RelativeLayout.LayoutParams(placeholderWidth, placeholderHeight));
         } else {
             holder.image.setImageDrawable(d);
         }
