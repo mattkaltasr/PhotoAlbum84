@@ -1,18 +1,12 @@
 package com.example.mattkalita.photoalbum84;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -20,10 +14,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Created by yigit on 11/27/2016.
  */
@@ -80,7 +83,7 @@ public class PhotoGridAdapter extends BaseAdapter implements View.OnCreateContex
     public class ViewHolder {
         ImageView image;
         TextView caption;
-        FrameLayout container;
+        RelativeLayout container;
     }
 
     @Override
@@ -90,28 +93,24 @@ public class PhotoGridAdapter extends BaseAdapter implements View.OnCreateContex
             convertView = inflater.inflate(R.layout.grid_square, null);
             holder.image = (ImageView) convertView.findViewById(R.id.image);
             holder.caption = (TextView) convertView.findViewById(R.id.caption);
-            holder.container = (FrameLayout) convertView.findViewById(R.id.grid_cell);
+            holder.container = (RelativeLayout) convertView.findViewById(R.id.grid_cell);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
-        String filepath = new File(ctx.getFilesDir() + File.separator
-                + photoList.get(position).getFilename()).getAbsolutePath();
-
-        holder.image.setLayoutParams(new LinearLayout.LayoutParams(placeholderWidth, placeholderHeight));
+        holder.image.setLayoutParams(new RelativeLayout.LayoutParams(placeholderWidth, placeholderHeight));
 
 //		Bitmap image = BitmapFactory.decodeFile(filepath, options);
 //		Bitmap resized = Bitmap.createScaledBitmap(image, placeholderWidth, placeholderHeight, true);
 //		holder.image.setImageBitmap(resized);
 //		image.recycle();
 
-        loadBitmap(filepath, holder.image);
+        loadBitmap(photoList.get(position).getImageUri(), holder.image);
 
-        holder.image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
         holder.image.setId(position);
 
-        holder.image.setLayoutParams(new LinearLayout.LayoutParams(150, 150));
+        holder.image.setLayoutParams(new RelativeLayout.LayoutParams(150, 150));
 
         String a = photoList.get(position).getPhotoFilenameWithoutExtension();
         holder.caption.setText(a);
@@ -135,6 +134,7 @@ public class PhotoGridAdapter extends BaseAdapter implements View.OnCreateContex
 
         return convertView;
     }
+
     public void showPhotoIntent(String name) {
 
         Intent i = new Intent(ctx, FullImageActivity.class);
@@ -149,39 +149,39 @@ public class PhotoGridAdapter extends BaseAdapter implements View.OnCreateContex
 
     }
 
-    public static Bitmap decodeFile(File f,int WIDTH,int HIGHT){
+    public static Bitmap decodeFile(File f, int WIDTH, int HIGHT) {
         try {
             //Decode image size
             BitmapFactory.Options o = new BitmapFactory.Options();
             o.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(new FileInputStream(f),null,o);
+            BitmapFactory.decodeStream(new FileInputStream(f), null, o);
 
             //The new size we want to scale to
-            final int REQUIRED_WIDTH=WIDTH;
-            final int REQUIRED_HIGHT=HIGHT;
+            final int REQUIRED_WIDTH = WIDTH;
+            final int REQUIRED_HIGHT = HIGHT;
             //Find the correct scale value. It should be the power of 2.
-            int scale=1;
-            while(o.outWidth/scale/2>=REQUIRED_WIDTH && o.outHeight/scale/2>=REQUIRED_HIGHT)
-                scale*=2;
+            int scale = 1;
+            while (o.outWidth / scale / 2 >= REQUIRED_WIDTH && o.outHeight / scale / 2 >= REQUIRED_HIGHT)
+                scale *= 2;
 
             //Decode with inSampleSize
             BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize=scale;
+            o2.inSampleSize = scale;
             return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+        } catch (FileNotFoundException e) {
         }
-        catch (FileNotFoundException e) {}
         return null;
     }
 
-    public void loadBitmap(String filepath, ImageView imageView) {
+    public void loadBitmap(Uri filepath, ImageView imageView) {
         BitMapWorkerTask task = new BitMapWorkerTask(imageView);
         task.execute(filepath);
     }
 
-    class BitMapWorkerTask extends AsyncTask<String, Void, Bitmap> {
+    class BitMapWorkerTask extends AsyncTask<Uri, Void, Bitmap> {
 
         private WeakReference<ImageView> imageViewReference = null;
-        private String data = null;
+        private Uri dataUri = null;
 
         public BitMapWorkerTask(ImageView imageView) {
             // Use a WeakReference to ensure the ImageView can be garbage collected
@@ -190,14 +190,18 @@ public class PhotoGridAdapter extends BaseAdapter implements View.OnCreateContex
 
         // Decode image in background.
         @Override
-        protected Bitmap doInBackground(String... params) {
-            data = params[0];
-            Bitmap image = BitmapFactory.decodeFile(data, options);
-            Bitmap resized = Bitmap.createScaledBitmap(image, placeholderWidth, placeholderHeight, true);
-            image.recycle();
-            image = null;
-            return resized;
-//	        return decodeSampledBitmapFromResource(getResources(), data, 100, 100));
+        protected Bitmap doInBackground(Uri... params) {
+            dataUri = params[0];
+            Bitmap image = null;
+            try {
+                image = MediaStore.Images.Media.getBitmap(ctx.getContentResolver(), dataUri);
+                Bitmap resized = Bitmap.createScaledBitmap(image, placeholderWidth, placeholderHeight, true);
+                image.recycle();
+                return resized;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         // Once complete, see if ImageView is still around and set bitmap.

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/grid_cell"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@android:color/holo_red_light"
-              android:orientation="vertical">
+                android:id="@+id/grid_cell"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/holo_red_light"
+                android:minHeight="200dp"
+                android:minWidth="200dp"
+                android:orientation="vertical">
 
     <ImageView
         android:id="@+id/image"
@@ -13,12 +15,13 @@
         android:contentDescription="@string/image"
         android:minHeight="200dp"
         android:minWidth="200dp"
-        android:scaleType="fitXY"/>
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:background="#55000000"
         android:maxLines="1"
