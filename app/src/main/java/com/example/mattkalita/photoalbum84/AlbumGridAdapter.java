@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +74,7 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
                 HashMap<String, Photo> photos = album.getValue().getPhotos();
                 if (photos != null && !photos.isEmpty()) {
                     for (Map.Entry<String, Photo> photo : photos.entrySet()) {
-                        if (checkIfExist(ctx,photo.getValue().getImageUri())) {
+                        if (checkIfExist(ctx, photo.getValue().getImageUri())) {
                             albumCovers.add(photo.getValue());
                         } else {
                             Log.e("File does not exist", photo.getValue().getImageUri().toString());
@@ -128,11 +129,13 @@ public class AlbumGridAdapter extends BaseAdapter implements View.OnCreateContex
             return convertView;
         }
 
-        String fname = albumCovers.get(position).getFilename();
-
-        if (!fname.isEmpty()) {
-            File file = new File(ctx.getFilesDir() + File.separator + fname);
-            holder.image.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath(), options));
+        Uri fileUri = albumCovers.get(position).getImageUri();
+        if (fileUri != null) {
+            try {
+                holder.image.setImageBitmap(MediaStore.Images.Media.getBitmap(ctx.getContentResolver(), fileUri));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             holder.image.setLayoutParams(new RelativeLayout.LayoutParams(placeholderWidth, placeholderHeight));
         } else {
             holder.image.setImageDrawable(d);
