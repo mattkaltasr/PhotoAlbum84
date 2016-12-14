@@ -13,7 +13,6 @@
         android:title="@string/move_photo"/>
     <item
         android:id="@+id/tags"
-        android:icon="@drawable/tags"
         android:showAsAction="ifRoom|withText"
         android:title="@string/tags"/>
     <item
